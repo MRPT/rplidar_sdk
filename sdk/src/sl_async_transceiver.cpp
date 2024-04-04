@@ -60,9 +60,9 @@ ProtocolMessage::ProtocolMessage()
     _changeBufSize();
 }
 
-ProtocolMessage::ProtocolMessage(_u8 cmd, const void* buffer, size_t size)
+ProtocolMessage::ProtocolMessage(_u8 _cmd, const void* buffer, size_t size)
 	: len(size)
-	, cmd(cmd)
+	, cmd(_cmd)
 	, data(NULL)
     , _databufsize(0)
 	, _usingOutterData(false)
@@ -201,10 +201,10 @@ u_result AsyncTransceiver::openChannelAndBind(IChannel* channel)
 		rp::hal::AutoLocker l(_opLocker);
 
         // try to open the channel ...
-        Result<nullptr_t> ans = SL_RESULT_OK;
+        Result<std::nullptr_t> ans2 = SL_RESULT_OK;
 
         if (!channel->open()) {
-            ans= RESULT_OPERATION_FAIL;
+            ans2= RESULT_OPERATION_FAIL;
             break;
         }
 

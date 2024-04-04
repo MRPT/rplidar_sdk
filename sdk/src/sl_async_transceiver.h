@@ -49,7 +49,7 @@ protected:
 
 public:
 	ProtocolMessage();
-	ProtocolMessage(_u8 cmd, const void* buffer, size_t size);
+	ProtocolMessage(_u8 _cmd, const void* buffer, size_t size);
 	ProtocolMessage(const ProtocolMessage& srcMsg);
 	virtual ~ProtocolMessage();
 

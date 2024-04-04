@@ -32,7 +32,7 @@
  *
  */
 
-#include "arch/linux/arch_linux.h"
+//#include "arch/linux/arch_linux.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,7 +40,7 @@
 #include <assert.h>
 // linux specific
 
-#include <errno.h>
+//#include <errno.h>
 #include <fcntl.h>
 
 #include <time.h>
@@ -87,8 +87,9 @@ bool raw_serial::open()
 }
 
 bool raw_serial::bind(const char * portname, uint32_t baudrate, uint32_t flags)
-{   
-    strncpy(_portName, portname, sizeof(_portName));
+{
+    volatile int len = sizeof(_portName); // Just to silent truncation warning
+    strncpy(_portName, portname, len);
     _baudrate = baudrate;
     _flags    = flags;
     return true;
@@ -204,20 +205,20 @@ bool raw_serial::open(const char * portname, uint32_t baudrate, uint32_t flags)
         // create self pipeline for wait cancellation
         if (pipe(_selfpipe) == -1) break;
 
-        int flags = fcntl(_selfpipe[0], F_GETFL);
-        if (flags == -1)
+        int flags2 = fcntl(_selfpipe[0], F_GETFL);
+        if (flags2 == -1)
             break;
 
-        flags |= O_NONBLOCK;                /* Make read end nonblocking */
-        if (fcntl(_selfpipe[0], F_SETFL, flags) == -1)
+        flags2 |= O_NONBLOCK;                /* Make read end nonblocking */
+        if (fcntl(_selfpipe[0], F_SETFL, flags2) == -1)
             break;
 
-        flags = fcntl(_selfpipe[1], F_GETFL);
-        if (flags == -1)
+        flags2 = fcntl(_selfpipe[1], F_GETFL);
+        if (flags2 == -1)
             break;
 
-        flags |= O_NONBLOCK;                /* Make write end nonblocking */
-        if (fcntl(_selfpipe[1], F_SETFL, flags) == -1)
+        flags2 |= O_NONBLOCK;                /* Make write end nonblocking */
+        if (fcntl(_selfpipe[1], F_SETFL, flags2) == -1)
             break;
 
     } while (0);
@@ -424,7 +425,8 @@ void raw_serial::cancelOperation()
     _operation_aborted = true;
     if (_selfpipe[1] == -1) return;
 
-    (int)::write(_selfpipe[1], "x", 1);
+    int ret = ::write(_selfpipe[1], "x", 1);
+    (void)ret;
 }
 
 _u32 raw_serial::getTermBaudBitmap(_u32 baud)

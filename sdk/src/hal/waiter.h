@@ -31,9 +31,9 @@ namespace rp{ namespace hal{
 			return result;
 		}
 
-		void setResult(ResultT result)
+		void setResult(ResultT _result)
 		{
-			this->result = result;
+			this->result = _result;
 			set();
 		}
 
