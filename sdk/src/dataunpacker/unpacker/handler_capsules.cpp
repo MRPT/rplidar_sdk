@@ -760,7 +760,7 @@ void UnpackerHandler_DenseCapsuleNode::_onScanNodeDenseCapsuleData(rplidar_respo
             int dist_q2;
             int angle_q6;
             int syncBit;
-            const int dist = static_cast<const int>(_cached_previous_dense_capsuledata.cabins[pos].distance);
+            const int dist = static_cast<int>(_cached_previous_dense_capsuledata.cabins[pos].distance);
             dist_q2 = dist << 2;
             angle_q6 = (currentAngle_raw_q16 >> 10);
             syncBit = (((currentAngle_raw_q16 + angleInc_q16) % (360 << 16)) < (angleInc_q16 << 1)) ? 1 : 0;

@@ -147,9 +147,9 @@ void UnpackerHandler_HQNode::onData(LIDARSampleDataUnpackerInner* engine, const 
 #endif
             if (recvCRC == crcCalc)
             {
-                for (size_t pos = 0; pos < _countof(nodesData->node_hq); ++pos)
+                for (size_t p = 0; p < _countof(nodesData->node_hq); ++p)
                 {
-                    rplidar_response_measurement_node_hq_t hqNode = nodesData->node_hq[pos];
+                    rplidar_response_measurement_node_hq_t hqNode = nodesData->node_hq[p];
 #ifdef _CPU_ENDIAN_BIG
                     hqNode.angle_z_q14 = le16_to_cpu(hqNode.angle_z_q14);
                     hqNode.dist_mm_q2 = le32_to_cpu(hqNode.dist_mm_q2);
